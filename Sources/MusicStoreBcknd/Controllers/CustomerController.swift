@@ -22,6 +22,7 @@ struct CustomerController: RouteCollection {
         }
     }
     
+    
     // Obtener todos los Customers
     func getCustomers(req: Request) async throws -> [CustomerDTO] {
         let results = try await Customer.query(on: req.db)
@@ -50,12 +51,14 @@ struct CustomerController: RouteCollection {
         }
     }
     
+    
     // Agrgar un nuevo cliente
     func addCustomer(req: Request) async throws -> Customer {
         let customer = try req.content.decode(Customer.self)
         try await customer.save(on: req.db)
         return customer
     }
+    
     
     //Obtener un cliente por su ID
     func getCustomerById(req: Request) async throws -> CustomerDTO {
@@ -92,6 +95,7 @@ struct CustomerController: RouteCollection {
         )
     }
     
+    
     // Actualizar un cliente
     func updateCustomer(req: Request) async throws -> Customer {
         let updateCustomer = try req.content.decode(Customer.self)
@@ -115,6 +119,7 @@ struct CustomerController: RouteCollection {
         try await customer.save(on: req.db)
         return customer
     }
+    
     
     // Eliminar un cliente
     func deleteCustomerById(req: Request) async throws -> HTTPStatus {

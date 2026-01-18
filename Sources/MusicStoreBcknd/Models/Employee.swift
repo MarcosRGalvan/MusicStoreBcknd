@@ -23,8 +23,8 @@ final class Employee: Model, Content, @unchecked Sendable {
     @Field(key: "Title")
     var title: String
     
-    @Field(key: "ReportsTo")
-    var reportsTo: Int?
+    @OptionalParent(key: "ReportsTo")
+    var manager: Employee?
     
     @Field(key: "BirthDate")
     var birthDate: Date?

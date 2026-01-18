@@ -20,6 +20,9 @@ func routes(_ app: Application) throws {
     // Controlador de Customers
     try app.register(collection: CustomerController())
     
+    // Controlador de Employees
+    try app.register(collection: EmployeeController())
+    
     // DEBUG: listar rutas
     app.routes.all.forEach { route in
         print("\(route.method) /\(route.path.map(\.description).joined(separator: "/"))")
