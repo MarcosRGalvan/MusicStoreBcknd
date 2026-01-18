@@ -16,9 +16,9 @@ struct AlbumController: RouteCollection {
         albums.get(use: getAlbums)         //GET /albums
         albums.post(use: addAlbum)         //POST /albums
         albums.group(":albumID") { albums in
-            albums.get(use: getAlbumById)
-            albums.put(use: updateAlbum)
-            albums.delete(use: deleteAlbumById)
+            albums.get(use: getAlbumById)       //GET /albums/id
+            albums.put(use: updateAlbum)        //PUT /albums/id
+            albums.delete(use: deleteAlbumById)     //DELETE /albums/id
         }
         
     }

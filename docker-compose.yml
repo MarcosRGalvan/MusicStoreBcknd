@@ -26,6 +26,9 @@ services:
     ports:
       - '8080:8080'
     # user: '0' # uncomment to run as root for testing purposes even though Dockerfile defines 'vapor' user.
+    volumes:
+      - ./Chinook.db:/app/Chinook.db
+    user: '0'
     command: ["serve", "--env", "production", "--hostname", "0.0.0.0", "--port", "8080"]
   migrate:
     image: musicstorebcknd:latest
