@@ -24,20 +24,38 @@ struct AlbumController: RouteCollection {
     }
     
     // Obtener todos los albums
-    func getAlbums(req: Request) async throws -> [AlbumDTO] {
-        let results = try await Album.query(on: req.db)
+    func getAlbums(req: Request) async throws -> PaginatedResponse<AlbumDTO> {
+
+        let page = req.query[Int.self, at: "page"] ?? 1
+        let perPage = req.query[Int.self, at: "limit"] ?? 20
+
+        let total = try await Album.query(on: req.db).count()
+
+        let albumIDs = try await Album.query(on: req.db)
+            .sort(\.$title, .ascending)
+            .range((page - 1) * perPage..<(page * perPage))
+            .all(\.$id)
+
+        let albums = try await Album.query(on: req.db)
+            .filter(\.$id ~~ albumIDs)
             .join(Artist.self, on: \Album.$artistId == \Artist.$id)
             .all()
-        
-        return try results.map { album in
+
+        let data = try albums.map { album in
             let artist = try album.joined(Artist.self)
-            
             return AlbumDTO(
                 id: album.id,
                 title: album.title,
                 artist: artist.name ?? "Unknown Artist"
             )
         }
+
+        return PaginatedResponse(
+            data: data,
+            page: page,
+            perPage: perPage,
+            total: total
+        )
     }
     
     // Agregar un nuevo album
